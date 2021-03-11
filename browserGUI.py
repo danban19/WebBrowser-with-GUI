@@ -1,25 +1,10 @@
-import requests
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtWebKit import *
-from PyQt5.QtWebKitWidgets import *
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
 
-
-from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
-    def __init__(self):
-        self.address = input('dawaj adres\n')
-
-    def get_page(self):
-        url = f"https://www.{self.address}"
-        web = QWebView()
-        web.load(QUrl(url))
-        web.show()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -34,9 +19,11 @@ class Ui_MainWindow(object):
         self.url_input.setFont(font)
         self.url_input.setObjectName("url_input")
 
-        self.page_view = QtWidgets.QGraphicsView(self.centralwidget)
-        self.page_view.setGeometry(QtCore.QRect(30, 60, 981, 771))
+
+        self.page_view = QWebEngineView(self.centralwidget)
+        self.page_view.setGeometry(QtCore.QRect(30, 50, 981, 771))
         self.page_view.setObjectName("page_view")
+
 
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(910, 10, 101, 31))
@@ -44,15 +31,26 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
-
         MainWindow.setCentralWidget(self.centralwidget)
+
+        self.pushButton.clicked.connect(lambda: self.get_page(self.url_input))
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Simple Browser"))
         self.pushButton.setText(_translate("MainWindow", "Open"))
+
+    def get_page(self, address):
+        url = f"https://www.{address.toPlainText()}"
+        self.browser = QWebEnginePage()
+        self.browser.setUrl(QUrl(url))
+        self.page_view.setPage(self.browser)
+
+
+
 
 
 
@@ -64,4 +62,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
