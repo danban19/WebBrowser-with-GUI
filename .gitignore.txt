@@ -3,4 +3,4 @@ venv/
 gui_1.ui
 gui_2.py
 gui_3.py
-main
+main.py
